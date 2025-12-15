@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { IncomeComponent } from './components/income/income.component';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IncomeComponent,
-    ExpenseComponent
+    ExpenseComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
