@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { ICellRendererParams } from 'ag-grid-community';
 import { IncomeService } from '../../services/income.service';
 import { Income } from '../../models/income.model';
+import { ToastService } from '../../services/toast.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 
 
@@ -14,6 +16,9 @@ import { Income } from '../../models/income.model';
 
 })
 export class IncomeComponent implements OnInit {
+  @ViewChild(ConfirmDialogComponent) confirmDialog!: ConfirmDialogComponent;
+
+  deletingIncomeId: number = 0;
 
   columnDefs: ColDef[] = [
     { field: 'source', headerName: 'Source', filter: true, sortable: true, flex: 1 },
@@ -63,7 +68,7 @@ export class IncomeComponent implements OnInit {
   };
 
 
-  constructor(private incomeService: IncomeService, private cdr: ChangeDetectorRef) {}
+  constructor(private incomeService: IncomeService, private cdr: ChangeDetectorRef, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.loadIncome();
@@ -85,6 +90,7 @@ export class IncomeComponent implements OnInit {
       this.incomeList = [...this.incomeList, res];
       this.newIncome = { source: '', amount: 0, date: '', category: '' };
       this.cdr.markForCheck();
+      this.toastService.success('Income added successfully!');
     });
   }
 
@@ -103,16 +109,27 @@ export class IncomeComponent implements OnInit {
       .subscribe(() => {
         this.loadIncome();
         this.editing = false;
+        this.toastService.success('Income updated successfully!');
         this.editData = { id: 0, source: '', amount: 0, date: '', category: '' };
       });
   }
 
   deleteIncome(id: number) {
-    if (confirm("Are you sure you want to delete this income?")) {
-      this.incomeService.deleteIncome(id).subscribe(() => {
-        this.loadIncome();
-      });
+    this.deletingIncomeId = id;
+    if (this.confirmDialog) {
+      this.confirmDialog.isOpen = true;
     }
+  }
+
+  onDeleteConfirmed() {
+    this.incomeService.deleteIncome(this.deletingIncomeId).subscribe(() => {
+      this.loadIncome();
+      this.toastService.success('Income deleted successfully!');
+    });
+  }
+
+  onDeleteCancelled() {
+    this.deletingIncomeId = 0;
   }
 
 }

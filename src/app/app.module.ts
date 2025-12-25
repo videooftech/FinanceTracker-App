@@ -7,6 +7,8 @@ import { IncomeComponent } from './components/income/income.component';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ChartsModule } from 'ng2-charts';
 import { AgGridModule } from 'ag-grid-angular';
 
@@ -17,7 +19,9 @@ import { AgGridModule } from 'ag-grid-angular';
     AppComponent,
     IncomeComponent,
     ExpenseComponent,
-    DashboardComponent
+    DashboardComponent,
+    ToastComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
