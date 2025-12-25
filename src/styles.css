@@ -52,6 +52,8 @@ body {
 }
 
 .btn { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600 }
+.btn-sm { padding:4px 8px; border-radius:6px; font-size:13px; font-weight:600 }
+.me-2 { margin-inline-end: 0.5rem; }
 .btn-primary { background: linear-gradient(90deg,var(--primary), var(--accent)); color:white; }
 .btn-ghost { background:transparent; color:var(--primary); border:1px solid #e6e9ef }
 .btn-danger { background:var(--danger); color:white }
@@ -143,3 +145,44 @@ body {
 @media (max-width:700px) {
 	.main-nav { width:100%; justify-content:space-around }
 }
+
+/* Make existing grid patterns collapse on small screens when present */
+@media (max-width: 767px) {
+  .grid.cols-3 { grid-template-columns: 1fr !important; }
+  .app-container { padding: 12px; margin: 8px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap:8px }
+  .brand > div { align-items: flex-start }
+}
+
+/* Ensure Bootstrap form elements blend with existing styles */
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+}
+
+.table-responsive { overflow-x:auto; }
+
+.badge {
+  background: #e0e0e0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: black;
+}
+
+.badge.income {
+  background: #d4edda;
+  color: #2e7d32;
+}
+
+.badge.expense {
+  background: #f8d7da;
+  color: #c62828;
+}
+
+
+ag-grid, ag-grid-angular, ag-grid-ng2, ag-grid-polymer, ag-grid-aurelia {
+    display: inline !important
+}
+ 

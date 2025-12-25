@@ -13,9 +13,10 @@ export class AppComponent implements OnInit {
   expenseList: any[] = [];
 
   newExpense = {
-    category: '',
+    title: '',
     amount: 0,
-    date: ''
+    date: '',
+    category: ''
   };
 
 
@@ -38,7 +39,7 @@ export class AppComponent implements OnInit {
   addExpense() {
     this.expenseService.addExpense(this.newExpense).subscribe(res => {
       this.expenseList.push(res);
-      this.newExpense = { category: '', amount: 0, date: '' };
+      this.newExpense = { title: '', amount: 0, date: '',  category: '' };
     });
   }
 

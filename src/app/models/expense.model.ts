@@ -1,6 +1,7 @@
 export interface Expense {
   id: number;
-  category: string;
+  title: string;
   amount: number;
   date: string;
+  category: string;
 }

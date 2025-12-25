@@ -1,30 +1,36 @@
 <div class="app-shell">
   <header class="site-header card">
-    <div class="brand">
-      <div class="logo">💼</div>
-      <div>
-        <div class="app-title">Finance Tracker</div>
-        <div class="app-sub">Personal budgeting made simple</div>
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+      <div class="brand d-flex align-items-center gap-3">
+        <div class="logo">💼</div>
+        <div>
+          <div class="app-title">Finance Tracker</div>
+          <div class="app-sub">Personal budgeting made simple</div>
+        </div>
       </div>
-    </div>
 
-    <nav class="main-nav">
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/income" routerLinkActive="active">Income</a>
-      <a routerLink="/expense" routerLinkActive="active">Expense</a>
-    </nav>
+      <nav class="main-nav d-flex mt-2 mt-md-0">
+        <a class="px-2" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a class="px-2" routerLink="/income" routerLinkActive="active">Income</a>
+        <a class="px-2" routerLink="/expense" routerLinkActive="active">Expense</a>
+      </nav>
+    </div>
   </header>
 
   <main class="app-container card" role="main">
-    <router-outlet></router-outlet>
+    <div class="container px-0">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 
   <footer class="site-footer card">
-    <div>© {{ 2025 }} Finance Tracker</div>
-    <div class="footer-links">
-      <a href="#">Help</a>
-      <a href="#">Privacy</a>
-      <a href="#">Contact</a>
+    <div class="container text-center">
+      <div>© {{ 2025 }} Finance Tracker</div>
+      <div class="footer-links mt-2">
+        <a href="#">Help</a>
+        <a href="#">Privacy</a>
+        <a href="#">Contact</a>
+      </div>
     </div>
   </footer>
 </div>

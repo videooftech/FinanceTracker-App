@@ -7,11 +7,41 @@
   </div>
 
   <div class="card">
-    <div class="form-row">
-      <input class="input" placeholder="Source" [(ngModel)]="newIncome.source">
-      <input class="input" type="number" placeholder="Amount" [(ngModel)]="newIncome.amount">
-      <input class="input" type="date" [(ngModel)]="newIncome.date">
-      <button class="btn btn-primary" (click)="addIncome()">Add Income</button>
+    <div class="title" *ngIf="!editing">Add Income</div>
+    <div class="title" *ngIf="editing">Edit Income</div>
+    <div class="row g-2 align-items-center">
+      <div class="col-12 col-sm-6 col-md-3">
+        <input class="form-control" placeholder="Source" [ngModel]="editing ? editData.source : newIncome.source" (ngModelChange)="editing ? editData.source = $event : newIncome.source = $event">
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-2">
+        <select class="form-select" [ngModel]="editing ? editData.category : newIncome.category" (ngModelChange)="editing ? editData.category = $event : newIncome.category = $event">
+          <option value="" disabled selected>Select Category</option>
+          <option>Salary</option>
+          <option>Freelance</option>
+          <option>Bonus</option>
+          <option>Investment</option>
+          <option>Gift</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-2">
+        <input class="form-control" type="number" placeholder="Amount" [ngModel]="editing ? editData.amount : newIncome.amount" (ngModelChange)="editing ? editData.amount = $event : newIncome.amount = $event">
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-2">
+        <input class="form-control" type="date" [ngModel]="editing ? editData.date : newIncome.date" (ngModelChange)="editing ? editData.date = $event : newIncome.date = $event">
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3" *ngIf="!editing">
+        <button class="btn btn-primary w-100" (click)="addIncome()">Add Income</button>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3 d-flex gap-2" *ngIf="editing">
+        <button class="btn btn-success w-50" (click)="saveEdit()">Save</button>
+        <button class="btn btn-secondary w-50" (click)="cancelEdit()">Cancel</button>
+      </div>
     </div>
   </div>
 
@@ -19,40 +49,16 @@
 
   <div class="card">
     <div class="title">Income List</div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Source</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of incomeList">
-
-          <ng-container *ngIf="!editing || editData.id !== item.id">
-            <td>{{ item.source }}</td>
-            <td class="income-amount">{{ item.amount | currency:'INR' }}</td>
-            <td>{{ item.date | date:'dd-MMM-yyyy' }}</td>
-            <td class="actions">
-              <button class="btn btn-ghost" (click)="startEdit(item)">Edit</button>
-              <button class="btn btn-danger" (click)="deleteIncome(item.id)">Delete</button>
-            </td>
-          </ng-container>
-
-          <ng-container *ngIf="editing && editData.id === item.id">
-            <td><input class="input" [(ngModel)]="editData.source"></td>
-            <td><input class="input" type="number" [(ngModel)]="editData.amount"></td>
-            <td><input class="input" type="date" [(ngModel)]="editData.date"></td>
-            <td>
-              <button class="btn btn-primary" (click)="saveEdit()">Save</button>
-              <button class="btn btn-ghost" (click)="cancelEdit()">Cancel</button>
-            </td>
-          </ng-container>
-
-        </tr>
-      </tbody>
-    </table>
+    <div class="ag-theme-alpine" style="width:100%; height:420px;">
+      <ag-grid-angular
+        [rowData]="incomeList"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [animateRows]="true"
+        [rowSelection]="'single'"
+        [context]="gridContext"
+        (gridReady)="onGridReady($event)">
+      </ag-grid-angular>
+    </div>
   </div>
 </div>
