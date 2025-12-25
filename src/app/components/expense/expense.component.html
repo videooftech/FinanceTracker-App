@@ -7,13 +7,15 @@
   </div>
 
   <div class="card">
+    <div class="title" *ngIf="!editing">Add Expense</div>
+    <div class="title" *ngIf="editing">Edit Expense</div>
     <div class="row g-2 align-items-center">
       <div class="col-12 col-sm-6 col-md-3">
-        <input class="form-control" placeholder="Title" [(ngModel)]="newExpense.title">
+        <input class="form-control" placeholder="Title" [ngModel]="editing ? editData.title : newExpense.title" (ngModelChange)="editing ? editData.title = $event : newExpense.title = $event">
       </div>
 
       <div class="col-12 col-sm-6 col-md-2">
-        <select class="form-select" [(ngModel)]="newExpense.category">
+        <select class="form-select" [ngModel]="editing ? editData.category : newExpense.category" (ngModelChange)="editing ? editData.category = $event : newExpense.category = $event">
           <option value="" disabled selected>Select Category</option>
           <option>Food</option>
           <option>Travel</option>
@@ -27,15 +29,20 @@
       </div>
 
       <div class="col-6 col-sm-4 col-md-2">
-        <input class="form-control" type="number" placeholder="Amount" [(ngModel)]="newExpense.amount">
+        <input class="form-control" type="number" placeholder="Amount" [ngModel]="editing ? editData.amount : newExpense.amount" (ngModelChange)="editing ? editData.amount = $event : newExpense.amount = $event">
       </div>
 
       <div class="col-6 col-sm-4 col-md-2">
-        <input class="form-control" type="date" [(ngModel)]="newExpense.date">
+        <input class="form-control" type="date" [ngModel]="editing ? editData.date : newExpense.date" (ngModelChange)="editing ? editData.date = $event : newExpense.date = $event">
       </div>
 
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-3" *ngIf="!editing">
         <button class="btn btn-primary w-100" (click)="addExpense()">Add Expense</button>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3 d-flex gap-2" *ngIf="editing">
+        <button class="btn btn-success w-50" (click)="saveEdit()">Save</button>
+        <button class="btn btn-secondary w-50" (click)="cancelEdit()">Cancel</button>
       </div>
     </div>
   </div>
@@ -49,10 +56,9 @@
         [rowData]="expenseList"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
-        [animateRows]="true"
+    
         [rowSelection]="'single'"
-        [context]="gridContext"
-        (gridReady)="onGridReady($event)">
+    >
       </ag-grid-angular>
     </div>
   </div>

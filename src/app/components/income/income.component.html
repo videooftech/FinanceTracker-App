@@ -7,13 +7,15 @@
   </div>
 
   <div class="card">
+    <div class="title" *ngIf="!editing">Add Income</div>
+    <div class="title" *ngIf="editing">Edit Income</div>
     <div class="row g-2 align-items-center">
       <div class="col-12 col-sm-6 col-md-3">
-        <input class="form-control" placeholder="Source" [(ngModel)]="newIncome.source">
+        <input class="form-control" placeholder="Source" [ngModel]="editing ? editData.source : newIncome.source" (ngModelChange)="editing ? editData.source = $event : newIncome.source = $event">
       </div>
 
       <div class="col-12 col-sm-6 col-md-2">
-        <select class="form-select" [(ngModel)]="newIncome.category">
+        <select class="form-select" [ngModel]="editing ? editData.category : newIncome.category" (ngModelChange)="editing ? editData.category = $event : newIncome.category = $event">
           <option value="" disabled selected>Select Category</option>
           <option>Salary</option>
           <option>Freelance</option>
@@ -25,15 +27,20 @@
       </div>
 
       <div class="col-6 col-sm-4 col-md-2">
-        <input class="form-control" type="number" placeholder="Amount" [(ngModel)]="newIncome.amount">
+        <input class="form-control" type="number" placeholder="Amount" [ngModel]="editing ? editData.amount : newIncome.amount" (ngModelChange)="editing ? editData.amount = $event : newIncome.amount = $event">
       </div>
 
       <div class="col-6 col-sm-4 col-md-2">
-        <input class="form-control" type="date" [(ngModel)]="newIncome.date">
+        <input class="form-control" type="date" [ngModel]="editing ? editData.date : newIncome.date" (ngModelChange)="editing ? editData.date = $event : newIncome.date = $event">
       </div>
 
-      <div class="col-12 col-sm-6 col-md-3">
+      <div class="col-12 col-sm-6 col-md-3" *ngIf="!editing">
         <button class="btn btn-primary w-100" (click)="addIncome()">Add Income</button>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-3 d-flex gap-2" *ngIf="editing">
+        <button class="btn btn-success w-50" (click)="saveEdit()">Save</button>
+        <button class="btn btn-secondary w-50" (click)="cancelEdit()">Cancel</button>
       </div>
     </div>
   </div>

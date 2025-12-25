@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { ICellRendererParams } from 'ag-grid-community';
 import { IncomeService } from '../../services/income.service';
@@ -55,8 +55,6 @@ export class IncomeComponent implements OnInit {
 
   incomeList: Income[] = [];
 
-
-
   newIncome: Omit<Income, 'id'> = {
     source: '',
     amount: 0,
@@ -65,7 +63,7 @@ export class IncomeComponent implements OnInit {
   };
 
 
-  constructor(private incomeService: IncomeService) {}
+  constructor(private incomeService: IncomeService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadIncome();
@@ -77,14 +75,16 @@ export class IncomeComponent implements OnInit {
 
   loadIncome() {
     this.incomeService.getIncome().subscribe(res => {
-      this.incomeList = res;
+      this.incomeList = [...res];
+      this.cdr.markForCheck();
     });
   }
 
   addIncome() {
     this.incomeService.addIncome(this.newIncome).subscribe(res => {
-      this.incomeList.push(res);
+      this.incomeList = [...this.incomeList, res];
       this.newIncome = { source: '', amount: 0, date: '', category: '' };
+      this.cdr.markForCheck();
     });
   }
 
@@ -95,6 +95,7 @@ export class IncomeComponent implements OnInit {
 
   cancelEdit() {
     this.editing = false;
+    this.editData = { id: 0, source: '', amount: 0, date: '', category: '' };
   }
 
   saveEdit() {
@@ -102,6 +103,7 @@ export class IncomeComponent implements OnInit {
       .subscribe(() => {
         this.loadIncome();
         this.editing = false;
+        this.editData = { id: 0, source: '', amount: 0, date: '', category: '' };
       });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-community';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
@@ -60,7 +60,7 @@ export class ExpenseComponent implements OnInit {
     category: ''
   };
 
-  constructor(private expenseService: ExpenseService) {}
+  constructor(private expenseService: ExpenseService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadExpenses();
@@ -78,8 +78,9 @@ export class ExpenseComponent implements OnInit {
 
   addExpense() {
     this.expenseService.addExpense(this.newExpense).subscribe(res => {
-      this.expenseList.push(res);
+      this.expenseList = [...this.expenseList, res];
       this.newExpense = { title: '', amount: 0, date: '',   category: '' };
+      this.cdr.markForCheck();
     });
   }
 
